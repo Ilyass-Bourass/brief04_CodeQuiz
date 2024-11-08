@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="div_logo">
+                <img src="images/logo.svg" alt="logo">
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+
+        <section class="quiz-info-bar">
+            <div class="score">Score : <span id="score">0</span></div>
+            <div class="timer">Temps restant : <span id="time">30s</span></div>
+            <div class="question-progress">Question <span id="question-number">1</span>/<strong>10</strong></div>
+        </section>
+
+        <section class="question_area multiple-choice">
+            <h2>Quelle est la capitale de la France ?</h2>
+            <div class="options">
+                <button>A. Londres</button>
+                <button>B. Paris</button>
+                <button>C. Rome</button>
+                <button>D. Madrid</button>
+            </div>
+        </section>
+
+        <section class="question_area vf-question">
+            <h2>La Tour Eiffel est située à Paris ?</h2>
+            <div class="options">
+                <!-- <button>Vrai</button>
+                <button>Faux</button> -->
+            </div>
+        </section>
+
+        <section class="question_area input-question">
+            <h2>Quel est le plus grand océan du monde ?</h2>
+            <input type="text" placeholder="Tapez votre réponse ici..." class="answer-input">
+            <button class="submit-answer">Valider</button>
+        </section>
+    </main>
+</body>
+</html>
