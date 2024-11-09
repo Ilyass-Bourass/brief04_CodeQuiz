@@ -164,7 +164,21 @@ img {
     font-size: 1.2em;
 }
 
+.progress-container {
+    width: 90%;
+    height: 30px;
+    background-color:var(--jaune-pastel);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px auto;
+}
 
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: var(--orange-peche);
+    transition: width 0.5s ease; 
+}
 
 
 .question_area {
