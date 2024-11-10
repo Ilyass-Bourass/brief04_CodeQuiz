@@ -118,6 +118,7 @@ img {
     margin:50px auto;
     margin-top: 100px;
     display: flex;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -128,14 +129,32 @@ img {
     line-height: 3;
     text-align: center;
     border-radius: 20px;
-    flex-grow: 1;
+    min-width: 20%;
+    box-shadow: 10px 10px var(--orange-clair);
+    transition: all 0.5s ease;
 }
 
+.quiz-list .quiz-card:hover{
+    transform: scale(1.05);
+    
+}
+
+.quiz-card h2 {
+    font-size: 1.5em;
+    color:var(--black); /* Utilisation de votre couleur de navigation */
+    font-weight: 700;
+}
+
+.quiz-card p {
+    font-size: 1.1em;
+    color:var(--orange-vif);
+    font-weight: 800;
+}
 
 .quiz-card button {
     padding: 8px 12%;
     background-color: var(--orange-vif);
-    font-size: 14px;
+    font-size: 1.2em;
     font-weight: 900;
     color: black;
     border: none;

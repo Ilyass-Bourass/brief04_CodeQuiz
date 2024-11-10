@@ -1,38 +1,9 @@
+const response = await fetch('data.json');
+const quizeSData = await response.json();
 
-const quizData = [
-    {
-        id: 1,
-        type: 'text',
-        question: 'Quelle méthode permet d’ajouter un élément à la fin d’un tableau ?',
-        correctAnswer: ['push', 'push()', '.push', '.push()'],
-        explanation: 'La méthode push() ajoute un ou plusieurs éléments à la fin d’un tableau.'
-      },
-    {
-      id: 2,
-      type: 'mcq',
-      question: 'Quelle méthode JavaScript permet de filtrer les éléments dun tableau ?',
-      options: ['map()', 'filter()', 'reduce()', 'forEach()'],
-      correctAnswer: 1,
-      explanation: 'filter() crée un nouveau tableau avec les éléments qui passent le test.'
-    },
-    {
-      id: 3,
-      type: 'boolean',
-      question: 'Le JavaScript est-il un langage synchrone par défaut ?',
-      options: ['vraix', 'faux'],
-      correctAnswer: 1,
-      explanation: 'JavaScript est monothread mais asynchrone.'
-    },
+const index_quiz=localStorage.index_quiz;
+const quizData =quizeSData[index_quiz].questions; 
     
-   
-    {
-      id: 4,
-      type: 'text',
-      question: 'Quelle méthode permet d’ajouter un élément à la fin d’un tableau ?',
-      correctAnswer: ['push', 'push()', '.push', '.push()'],
-      explanation: 'La méthode push() ajoute un ou plusieurs éléments à la fin d’un tableau.'
-    }      
-  ];
 
   let barProgression=document.getElementById("progressBar");
   let btn_progress=document.querySelector(".btn_progress");
