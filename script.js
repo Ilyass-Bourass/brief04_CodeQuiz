@@ -1,5 +1,9 @@
-const response = await fetch('data.json');
-const quizeSData = await response.json();
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    const quizeSData=JSON.parse(localStorage.getItem("quizeSData"));
+
+
 
 const index_quiz=localStorage.index_quiz;
 const quizData =quizeSData[index_quiz].questions; 
@@ -16,10 +20,11 @@ const quizData =quizeSData[index_quiz].questions;
       pourcentageBarre+=100/quizData.length;
   }
   
-let miuteur; // Déclare miuteur en dehors de la fonction pour un accès global
+let miuteur;
+const elementTemps = document.getElementById("time");
 
 function demarrerMinuteur(){
-    const elementTemps = document.getElementById("time");
+    
     let tempsRestant = 10;
     elementTemps.textContent = tempsRestant + "s"; 
     
@@ -28,42 +33,51 @@ function demarrerMinuteur(){
             tempsRestant--;
             elementTemps.textContent = tempsRestant + "s"; 
         } else {
-            clearInterval(miuteur); // Arrête le minuteur quand le temps est écoulé
-            suivanteQuestion(); // Passe à la question suivante
+            clearInterval(miuteur);
+            suivanteQuestion(); 
         }
     }
 
-    clearInterval(miuteur); // Assure que tout ancien intervalle est supprimé
-    miuteur = setInterval(decrementerTemps, 1000); // Démarre un nouveau minuteur
+    clearInterval(miuteur);
+    miuteur = setInterval(decrementerTemps, 1000);
 }
 
 
-let indiceQuestionActuelle = 0; // Indice de la question en cours
+let indiceQuestionActuelle = 0;
 let score=0;
 const spanScore=document.querySelector("#score");
 
+const zoneTous=document.querySelector(".question_area");
+const zoneChoixMultiple=document.querySelector(".multiple-choice");
+const zonevraiFaux=document.querySelector(".vf-question");
+const zoneQuestionInput = document.querySelector(".input-question");
+
+const details_quiz_utilisateur=document.querySelector(".details_quiz_utilisateur");
+
 function afficherQuestion() {
     demarrerMinuteur();
-    const zoneTous=document.querySelector(".question_area");
+    
     const zoneOptions = document.querySelector(".question_area .options");
     const zoneQuestion = document.querySelector(".question_area h2");
 
-    const zoneChoixMultiple=document.querySelector(".multiple-choice");
+    
 
-    const zonevraiFaux=document.querySelector(".vf-question");
+    
     const zoneOptionsVF = document.querySelector(".vf-question .options");
     const zoneQuestionVF = document.querySelector(".vf-question h2");
 
 
-    const zoneQuestionInput = document.querySelector(".input-question");
+    
     const titreQuestionInput = zoneQuestionInput.querySelector("h2");
     const champDeSaisie = zoneQuestionInput.querySelector(".answer-input");
     const boutonValiderReponse = zoneQuestionInput.querySelector(".submit-answer");
 
+
+
+
+
     const questionActuelle = quizData[indiceQuestionActuelle];
 
-    
-    
 
     const nombreQuestion=document.querySelector("#question-number");
     nombreQuestion.textContent=indiceQuestionActuelle+1;
@@ -75,6 +89,7 @@ function afficherQuestion() {
     zoneChoixMultiple.style.display = "none";
     zonevraiFaux.style.display = "none";
     zoneQuestionInput.style.display = "none";
+    details_quiz_utilisateur.style.display="none";
     
     switch (questionActuelle.type) {
         case 'mcq':
@@ -102,7 +117,6 @@ function afficherQuestion() {
             questionActuelle.options.forEach((option, index) => {
             const bouton = document.createElement("button");
             bouton.textContent = option;
-        
             bouton.addEventListener("click", () => verifierReponse(index));    
             zoneOptionsVF.appendChild(bouton);
             });
@@ -131,9 +145,47 @@ function afficherQuestion() {
                         champDeSaisie.style.backgroundColor = "green";
                         score++;
                         spanScore.textContent=score;
+
+                        const question_detail_user=document.createElement("h3");
+                        question_detail_user.textContent=questionActuelle.question;
+                        container_questions_correctes.appendChild(question_detail_user);
+
+                        const div_reponse_corrcte=document.createElement("div");
+                        div_reponse_corrcte.classList.add("reponses_correctes");
+                        div_reponse_corrcte.textContent=champDeSaisie.value;
+                        div_reponse_corrcte.style.fontSize="18px";
+                        div_reponse_corrcte.style.fontFamily="bold";
+                        container_questions_correctes.appendChild(div_reponse_corrcte);
+
+                        const explication=document.createElement("h4");
+                        explication.textContent=questionActuelle.explication;
+                        explication.style.marginBottom = "20px";
+                        container_questions_correctes.appendChild(explication);
+
+
+
                     } else {
                         boutonValiderReponseClone.style.backgroundColor = "red";
                         champDeSaisie.style.backgroundColor = "red";
+
+                        const question_detail_user=document.createElement("h3");
+                        question_detail_user.textContent=questionActuelle.question;
+                        container_questions_incorrectes.appendChild(question_detail_user);
+
+                        const div_reponse_incorrcte=document.createElement("div");
+                        div_reponse_incorrcte.classList.add("reponses_incorrectes");
+                        div_reponse_incorrcte.textContent=champDeSaisie.value;
+                        div_reponse_incorrcte.style.fontSize="18px";
+                        div_reponse_incorrcte.style.fontFamily="bold";
+                        container_questions_incorrectes.appendChild(div_reponse_incorrcte);
+
+                        const explication=document.createElement("h4");
+                        explication.textContent=questionActuelle.explication;
+                        explication.style.marginBottom = "20px";
+                        container_questions_incorrectes.appendChild(explication);
+
+                        
+
                     }
                     boutonValiderReponseClone.disabled = true;
                 
@@ -156,6 +208,11 @@ function afficherQuestion() {
         
 }
 
+const container_questions_correctes=document.querySelector(".container_questions_correctes");
+const container_questions_incorrectes=document.querySelector(".container_questions_incorrectes");
+
+
+
 function verifierReponse(indiceReponse) {
     const questionActuelle = quizData[indiceQuestionActuelle];
     const options = questionActuelle.type === 'boolean' 
@@ -173,9 +230,41 @@ function verifierReponse(indiceReponse) {
         boutons[indiceReponse].style.backgroundColor = 'green';
         score++;
         spanScore.textContent=score;
+
+        const question_detail_user=document.createElement("h3");
+        question_detail_user.textContent=questionActuelle.question;
+        container_questions_correctes.appendChild(question_detail_user);
+
+        const div_reponse_corrcte=document.createElement("div");
+        div_reponse_corrcte.classList.add("reponses_correctes");
+        div_reponse_corrcte.textContent=boutons[indiceReponse].textContent;
+        div_reponse_corrcte.style.fontSize="18px";
+        div_reponse_corrcte.style.fontFamily="bold";
+        container_questions_correctes.appendChild(div_reponse_corrcte);
+
+        const explication=document.createElement("h4");
+        explication.textContent=questionActuelle.explication;
+        explication.style.marginBottom = "20px";
+        container_questions_correctes.appendChild(explication);
+
     } else {
         boutons[indiceReponse].style.backgroundColor = 'red';
         boutons[bonneReponse].style.backgroundColor = 'green';
+        const question_detail_user=document.createElement("h3");
+        question_detail_user.textContent=questionActuelle.question;
+        container_questions_incorrectes.appendChild(question_detail_user);
+
+        const div_reponse_corrcte=document.createElement("div");
+        div_reponse_corrcte.classList.add("reponses_incorrectes");
+        div_reponse_corrcte.textContent=boutons[indiceReponse].textContent;
+        div_reponse_corrcte.style.fontSize="18px";
+        div_reponse_corrcte.style.fontFamily="bold";
+        container_questions_incorrectes.appendChild(div_reponse_corrcte);
+
+        const explication=document.createElement("h4");
+        explication.textContent=questionActuelle.explication;
+        explication.style.marginBottom = "20px";
+        container_questions_incorrectes.appendChild(explication);
     }
     boutons.forEach(botton=>{
         botton.disabled="true"
@@ -183,16 +272,26 @@ function verifierReponse(indiceReponse) {
    setTimeout(suivanteQuestion,1000);
 }
 
+
 function suivanteQuestion() {
     indiceQuestionActuelle++;
-
 
     if (indiceQuestionActuelle >= quizData.length) {
         fonction_augment_Bar();
         
-        setTimeout(() => {
-            alert("Votre score est : " + score + "/" + quizData.length); 
-        }, 500);
+        // setTimeout(() => {
+        //     alert("Votre score est : " + score + "/" + quizData.length); 
+        // }, 500);
+        setTimeout(()=>{
+        const affichage_score=document.querySelector(".affichage_score h2 span");
+        zoneTous.style.display = "none";
+        zoneChoixMultiple.style.display = "none";
+        zonevraiFaux.style.display = "none";
+        zoneQuestionInput.style.display = "none";
+        details_quiz_utilisateur.style.display="block";
+        affichage_score.textContent=`${score} / ${quizData.length} `
+        },2000);
+        
         return;
     }
 
@@ -202,3 +301,5 @@ function suivanteQuestion() {
 }
 
 afficherQuestion();
+
+});

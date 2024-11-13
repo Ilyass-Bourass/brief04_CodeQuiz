@@ -1,5 +1,7 @@
-const response = await fetch('data.json');
-const quizeSData = await response.json();
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const quizeSData=JSON.parse(localStorage.getItem("quizeSData"));
 
 const quiz_list = document.querySelector(".quiz-list");
 console.log(quiz_list);
@@ -64,19 +66,32 @@ search_input.addEventListener("input",(e)=>{
 })
 
 const difficultyOptions = document.querySelectorAll('input[name="difficulty"]');
+let lastSelectedOption = null;
 
 difficultyOptions.forEach(option => {
-    option.addEventListener('change', (e) => {
-        const selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value.toLowerCase();
-        quizCards.forEach(quizCard=>{
-            const NiveuQuiz=quizCard.children[2].querySelector("span").textContent.toLocaleLowerCase().trim();
+    option.addEventListener('click', () => {
+        if (lastSelectedOption === option) {
+            option.checked = false;
+            lastSelectedOption = null;
 
-            if(NiveuQuiz===selectedDifficulty){
-                quizCard.style.display="";
-            }
-            else{
-                quizCard.style.display="none";
-            }
-        })
+            quizCards.forEach(quizCard => {
+                quizCard.style.display = "";
+            });
+        } else {
+            lastSelectedOption = option;
+            const selectedDifficulty = option.value.toLowerCase();
+            
+            quizCards.forEach(quizCard => {
+                const niveauQuiz = quizCard.children[2].querySelector("span").textContent.toLowerCase().trim();
+                
+                if (niveauQuiz === selectedDifficulty) {
+                    quizCard.style.display = "";
+                } else {
+                    quizCard.style.display = "none";
+                }
+            });
+        }
     });
+});
+
 });
