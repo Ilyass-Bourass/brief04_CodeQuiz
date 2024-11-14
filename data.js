@@ -90,7 +90,8 @@ const quizeSData=[
                 "correctAnswer": 0
             }
         ]
-    }
+    },
+    
 ]
 
 localStorage.setItem("quizeSData",JSON.stringify(quizeSData));

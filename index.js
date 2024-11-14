@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded",()=>{
 
 const quizeSData=JSON.parse(localStorage.getItem("quizeSData"));
+console.log(quizeSData);
 
 const quiz_list = document.querySelector(".quiz-list");
 console.log(quiz_list);

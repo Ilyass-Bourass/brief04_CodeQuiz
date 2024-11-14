@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="admin.js" defer></script>
+    <!-- <script src="data.js" defer></script> -->
+    <script  src="admin.js" defer></script>
 </head>
 
 <body>
@@ -49,13 +50,13 @@
                     <div class="quiz-section">
                         <h1>Ajouter un Nouveau Quiz</h1>
                         <label for="title">Titre du Quiz</label>
-                        <input type="text" id="title" name="title" required>
+                        <input type="text" id="title" name="title">
 
                         <label for="categorie">Catégorie</label>
-                        <input type="text" id="categorie" name="categorie" required>
+                        <input type="text" id="categorie" name="categorie">
 
                         <label for="tempsEstime">Temps Estimé (minutes)</label>
-                        <input type="number" id="tempsEstime" name="tempsEstime" required>
+                        <input type="number" id="tempsEstime" name="tempsEstime" >
 
                         <label for="niveau">Niveau de Difficulté</label>
                         <select id="niveau" name="niveau">
@@ -73,13 +74,11 @@
                         <div class="question">
                             <label for="quiz">selectionner le titre de quiz</label>
                             <select id="quiz" name="selectQuiz">
-                                <option value="ALL">ALL</option>
-                                <option value="html">HTML</option>
-                                <option value="css">CSS</option>
-                                <option value="javascript">JAVASCRIPT</option>
+                                <option index_quiz_admin=-1>ALL</option>
                             </select>
                             <label for="question-type">Type de Question</label>
                             <select id="question-type" name="question-type">
+                                <option value="#">Selectionner le type de question</option>
                                 <option value="mcq">QCM</option>
                                 <option value="boolean">Vrai/Faux</option>
                                 <option value="text">Texte</option>
@@ -90,10 +89,10 @@
                                 <label for="question-text">Question :(type: QCM)</label>
                                 <input type="text" id="question-text" name="question-text">
                                 <label>Options (pour QCM seulement)</label>
-                                <input type="text" name="option1" placeholder="Option 1">
-                                <input type="text" name="option2" placeholder="Option 2">
-                                <input type="text" name="option3" placeholder="Option 3">
-                                <input type="text" name="option4" placeholder="Option 4">
+                                <input type="text" id="option1" placeholder="Option 1">
+                                <input type="text" id="option2" placeholder="Option 2">
+                                <input type="text" id="option3" placeholder="Option 3">
+                                <input type="text" id="option4" placeholder="Option 4">
 
                                 <label for="correct-index">Indice de la Réponse Correcte</label>
                                 <input type="number" id="correct-index" name="correct-index" min="0" max="3">
@@ -122,8 +121,8 @@
                                 <label for="question-text">Question :(type:text)</label>
                                 <input type="text" id="question-text" name="question-text">
                                 <label>Réponses</label>
-                                <input type="text" name="option1" placeholder="Réponse01">
-                                <input type="text" name="option2" placeholder="Réponse02">
+                                <input type="text" id="option1" placeholder="Réponse01">
+                                <input type="text" id="option2" placeholder="Réponse02">
                                 <label for="explication">Explication</label>
                                 <textarea id="explication" name="explication"></textarea>
                                 <button type="submit" class="add-question ajouter_questionText">Ajouter la Question</button>
