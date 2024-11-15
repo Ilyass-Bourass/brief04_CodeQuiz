@@ -1,6 +1,11 @@
 
-document.addEventListener("DOMContentLoaded",()=>{
 
+
+document.addEventListener("DOMContentLoaded",()=>{
+    let temps=0;
+    let miniteurtempsComplet;
+    demarrerTempsComplet();
+    
     const quizeSData=JSON.parse(localStorage.getItem("quizeSData"));
     console.log(quizeSData);
 
@@ -29,7 +34,13 @@ function demarrerMinuteur(){
     elementTemps.textContent = tempsRestant + "s"; 
     
     function decrementerTemps(){
-        if(tempsRestant > 0){
+        if(indiceQuestionActuelle >= quizData.length){
+            setTimeout(()=>{
+                elementTemps.textContent = 0 + "s"; 
+            },1000)
+            
+        }
+         if(tempsRestant > 0){
             tempsRestant--;
             elementTemps.textContent = tempsRestant + "s"; 
         } else {
@@ -42,6 +53,20 @@ function demarrerMinuteur(){
     miuteur = setInterval(decrementerTemps, 1000);
 }
 
+function demarrerTempsComplet() {
+
+        temps = 0;    
+        miniteurtempsComplet = setInterval(() => {
+        temps++;
+        affichageTempsComplet.textContent = `${temps}s`;
+    }, 1000);
+
+}
+
+function arreterTempsComplet() {
+    clearInterval(miniteurtempsComplet);
+}
+
 
 let indiceQuestionActuelle = 0;
 let score=0;
@@ -51,12 +76,19 @@ const zoneTous=document.querySelector(".question_area");
 const zoneChoixMultiple=document.querySelector(".multiple-choice");
 const zonevraiFaux=document.querySelector(".vf-question");
 const zoneQuestionInput = document.querySelector(".input-question");
+const affichageTempsComplet=document.querySelector(".affichage_temps span");
+
+
+console.log(affichageTempsComplet);
 
 const details_quiz_utilisateur=document.querySelector(".details_quiz_utilisateur");
 
 function afficherQuestion() {
+
     demarrerMinuteur();
     
+     
+
     const zoneOptions = document.querySelector(".question_area .options");
     const zoneQuestion = document.querySelector(".question_area h2");
 
@@ -104,8 +136,9 @@ function afficherQuestion() {
         
             bouton.addEventListener("click", () => verifierReponse(index));    
             zoneOptions.appendChild(bouton);
+        
             });
-
+            
             break;
     
         case 'boolean':
@@ -160,6 +193,7 @@ function afficherQuestion() {
                         const explication=document.createElement("h4");
                         explication.textContent=questionActuelle.explication;
                         explication.style.marginBottom = "20px";
+                        explication.style.color="green";
                         container_questions_correctes.appendChild(explication);
 
 
@@ -182,6 +216,7 @@ function afficherQuestion() {
                         const explication=document.createElement("h4");
                         explication.textContent=questionActuelle.explication;
                         explication.style.marginBottom = "20px";
+                        explication.style.color="red";
                         container_questions_incorrectes.appendChild(explication);
 
                         
@@ -199,9 +234,7 @@ function afficherQuestion() {
                     }, 1000);
                 });
                 
-                break;
-            
-    
+                break;   
         default:
             console.log("Type de question inconnu");
     }
@@ -222,10 +255,10 @@ function verifierReponse(indiceReponse) {
     const boutons = options.querySelectorAll(" button");
     const bonneReponse = questionActuelle.correctAnswer;
 
-    // Réinitialiser tous les boutons en blanc
+
     boutons.forEach(bouton => bouton.style.backgroundColor = "#F2E6E6");
 
-    // Colorier le bouton en fonction de la réponse
+
     if (indiceReponse === bonneReponse) {
         boutons[indiceReponse].style.backgroundColor = 'green';
         score++;
@@ -245,6 +278,7 @@ function verifierReponse(indiceReponse) {
         const explication=document.createElement("h4");
         explication.textContent=questionActuelle.explication;
         explication.style.marginBottom = "20px";
+        explication.style.color="green";
         container_questions_correctes.appendChild(explication);
 
     } else {
@@ -264,6 +298,7 @@ function verifierReponse(indiceReponse) {
         const explication=document.createElement("h4");
         explication.textContent=questionActuelle.explication;
         explication.style.marginBottom = "20px";
+        explication.style.color="red";
         container_questions_incorrectes.appendChild(explication);
     }
     boutons.forEach(botton=>{
@@ -274,32 +309,51 @@ function verifierReponse(indiceReponse) {
 
 
 function suivanteQuestion() {
+
     indiceQuestionActuelle++;
 
     if (indiceQuestionActuelle >= quizData.length) {
         fonction_augment_Bar();
-        
-        // setTimeout(() => {
-        //     alert("Votre score est : " + score + "/" + quizData.length); 
-        // }, 500);
+        arreterTempsComplet();
         setTimeout(()=>{
         const affichage_score=document.querySelector(".affichage_score h2 span");
+        const affichage_pourcentage=document.querySelector(".affichage_pourcentage span");
+        
         zoneTous.style.display = "none";
         zoneChoixMultiple.style.display = "none";
         zonevraiFaux.style.display = "none";
         zoneQuestionInput.style.display = "none";
         details_quiz_utilisateur.style.display="block";
         affichage_score.textContent=`${score} / ${quizData.length} `
+        affichage_pourcentage.textContent = `${((score / quizData.length) * 100).toFixed(2)}%`;
         },2000);
         
         return;
     }
 
-
+    else{
     fonction_augment_Bar(); 
-    afficherQuestion(); 
+    afficherQuestion();
+    }
+     
 }
-
 afficherQuestion();
+
+const btnrepeatQuiz=document.querySelector(".btnrepeatQuiz");
+const btnNouveauQuiz=document.querySelector(".btnNouveauQuiz");
+
+btnrepeatQuiz.addEventListener("click", () => {
+    setTimeout(() => {
+        location.reload();
+    }, 500); 
+});
+
+
+btnNouveauQuiz.addEventListener("click",()=>{
+    setTimeout(()=>{
+        window.location.href="index.html";
+    },500);
+    
+})
 
 });

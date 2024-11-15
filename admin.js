@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputCategorieQuiz = document.querySelector(".quiz-section #categorie");
         const inputTempsQuiz = document.querySelector(".quiz-section #tempsEstime");
         const selectNiveau = document.querySelector("#niveau");
-
+        
         const nouveauQuiz = {
             "title": inputTileQuiz.value,
             "categorie": inputCategorieQuiz.value,
@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         ajouter_questionText.addEventListener("click", (e) => {
+            ajouter_questionText.removeEventListener("click");
             e.preventDefault();
         
         const inputquestionTxt=document.querySelector(".text-options #question-text");
@@ -108,12 +109,14 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(index_quiz_admin);
         quizeSData[index_quiz_admin].questions.push(nouveauQustionTxt);
         localStorage.setItem("quizeSData", JSON.stringify(quizeSData));
+       // ajouter_questionText.removeEventListener("click");
         alert("la qustion a été enregestrer avec succés");
         ajouterQuestion();
                
         });
 
         ajouter_questionQcm.addEventListener("click", (e) => {
+            
             e.preventDefault();
             const inputQustionQcm=document.querySelector(".mcq-options #question-text");
             const inputOption01=document.querySelector(".mcq-options #option1");
@@ -128,18 +131,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 "type": "mcq",
                 "question":inputQustionQcm.value,
                 "options": [inputOption01.value,inputOption02.value,inputOption03.value,inputOption04.value],
-                "correctAnswer":inputCorrectIndex.value,
+                "correctAnswer":parseInt(inputCorrectIndex.value),
                 "explication":inputExplication.value
             }
             const index_quiz_admin=parseInt(localStorage.getItem("index_quiz_admin"));
             console.log(index_quiz_admin);
             quizeSData[index_quiz_admin].questions.push(nouveauQuestionQcm);
             localStorage.setItem("quizeSData", JSON.stringify(quizeSData));
+         //   ajouter_questionQcm.removeEventListener("click");
             alert("la qustion a été enregestrer avec succés");
             ajouterQuestion();
         });
 
-        ajouter_questionVF.addEventListener("click", (e) => {
+        ajouter_questionVF.addEventListener("click", (e) => {  
             e.preventDefault();
             const inputquestionVF=document.querySelector(".boolean-options #question-text");
             const inputCorrectIndex=document.querySelector(".boolean-options #correct-index");
@@ -153,15 +157,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 "type": "boolean",
                 "question":inputquestionVF.value,
                 "options": ["vrai", "faux"],
-                "correctAnswer":inputCorrectIndex.value,
+                "correctAnswer":parseInt(inputCorrectIndex.value),
                 "explication":inputExplication.value
             }
             const index_quiz_admin=parseInt(localStorage.getItem("index_quiz_admin"));
             console.log(index_quiz_admin);
             quizeSData[index_quiz_admin].questions.push(nouveauQuestionVF);
             localStorage.setItem("quizeSData", JSON.stringify(quizeSData));
+           // ajouter_questionVF.removeEventListener("click");
             alert("la qustion a été enregestrer avec succés");
-            ajouterQuestion();
+            ajouterQuestion();            
         });
     }
 
